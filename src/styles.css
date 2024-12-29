@@ -63,3 +63,7 @@ div[data-testid="stMarkdownContainer"] p {
     font-size: 18px; /* Adjust font size for header */
     font-weight: bold; /* Optional: make header bold */
 }
+
+h1, h2 {
+    text-align: center;
+}
