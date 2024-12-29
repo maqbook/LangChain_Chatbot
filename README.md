@@ -1,4 +1,4 @@
-# LangChain Chatbot
+# 🤖 LangChain Chatbot 🦙
 
 This project aims to develop an interactive chatbot leveraging the power of Langchain and Ollama. The chatbot provides a conversational interface, enriched with message history for your session. You can clear the message history by pressing the "Clear Chat History" button.
 
