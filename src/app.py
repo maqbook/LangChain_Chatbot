@@ -1,32 +1,30 @@
 import streamlit as st
 from langchain_ollama import ChatOllama
 
-st.title("Converse with LLAMA 🦙")
-
-st.write("Chat away with LLAMA! 💬")
+st.title("Chat with LLAMA3.2 🦙")
+st.write("Welcome to the chatbot interface for LLAMA3.2! Type your message to begin the conversation. 💬" )
 
 with st.form("llm-form"):
-    text = st.text_area("What would like to talk about?")
-    submit = st.form_submit_button("Enter")
+    text = st.text_area("What do you want to talk about?")
+    submit = st.form_submit_button("Submit")
 
 def generate_response(input_text):
-    model = ChatOllama(model="llama3.2:3b", base_url="http://localhost:11434/")
+    model = ChatOllama(model="llama3.2", base_url="http://localhost:11434/")
 
-    response = model.chat(input_text)
+    response = model.invoke(input_text)
     return response.content
 
 if "chat_history" not in st.session_state:
-    st.session_state['chat_history'] = []
+    st.session_state["chat_history"] = []
 
 if submit and text:
-    with st.spinner("LLAMA is typing..."):
+    with st.spinner("LLAMA is typing...:"):
         response = generate_response(text)
-        st.session_state['chat_history'].append(("user": text, "LLAMA": response))
+        st.session_state["chat_history"].append({"user": text, "ollama": response})
         st.write(response)
-    response = generate_response(text)
 
-st.write("## Chat History")
-for chat in st.session_state['chat_history']:
+st.write("Chat History")
+for chat in st.session_state["chat_history"]:
     st.write(f"User: {chat['user']}")
-    st.write(f"LLAMA: {chat['LLAMA']}")
+    st.write(f"LLAMA: {chat['ollama']}")
     st.write("----")
