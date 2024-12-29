@@ -11,7 +11,7 @@ def local_css(file_name):
 
 # Load the CSS file
 local_css("styles.css")
-st.title("Chat with LLAMA3.2 🦙")
+st.markdown("<h1 style='text-align: center;'>Chat with LLAMA3.2 🦙</h1>", unsafe_allow_html=True)
 st.write("Welcome to the chatbot interface for LLAMA3.2! Type your message to begin the conversation. 💬" )
 
 with st.form("llm-form"):
@@ -49,7 +49,8 @@ if submit and text:
         response = generate_response(text)
         st.write(response)
 
-with st.expander("📜 Chat History 📜", expanded=False):
+with st.expander("History", expanded=False):
+    st.markdown("<h2 style='text-align: center;'>📜 Chat History 📜</h2>", unsafe_allow_html=True)
     for message in st.session_state["chat_history"].messages:
         if isinstance(message, HumanMessage):
             st.write(f"🧍User: {message.content}")
