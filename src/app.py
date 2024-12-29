@@ -1,5 +1,8 @@
 import streamlit as st
 from langchain_ollama import ChatOllama
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain_core.messages import HumanMessage, AIMessage
+
 
 # Function to load CSS
 def local_css(file_name):
@@ -18,28 +21,37 @@ with st.form("llm-form"):
         submit = st.form_submit_button("Enter")
     with col2:
         if st.form_submit_button("Clear Chat History"):
-            st.session_state["chat_history"] = []
+            st.session_state["chat_history"] = InMemoryChatMessageHistory()
             st.success("Chat history cleared!")
 
 
 
-def generate_response(input_text):
+def generate_response(user_input):
+    st.session_state["chat_history"].add_message(HumanMessage(content=user_input))
+    
+    messages = st.session_state["chat_history"].messages
+    
     model = ChatOllama(model="llama3.2", base_url="http://localhost:11434/")
+    
+    response = model.invoke(messages)
 
-    response = model.invoke(input_text)
+    st.session_state["chat_history"].add_message(AIMessage(content=response.content))
+    
     return response.content
 
+
 if "chat_history" not in st.session_state:
-    st.session_state["chat_history"] = []
+    st.session_state["chat_history"] = InMemoryChatMessageHistory()
+
 
 if submit and text:
     with st.spinner("LLAMA is generating a response..."):
         response = generate_response(text)
-        st.session_state["chat_history"].append({"user": text, "ollama": response})
         st.write(response)
 
-st.write("📜 Chat History 📜")
-for chat in st.session_state["chat_history"]:
-    with st.expander(f"🧍User: {chat['user']}", expanded=False):
-        st.write(f"🦙LLAMA: {chat['ollama']}")
-
+with st.expander("📜 Chat History 📜", expanded=False):
+    for message in st.session_state["chat_history"].messages:
+        if isinstance(message, HumanMessage):
+            st.write(f"🧍User: {message.content}")
+        elif isinstance(message, AIMessage):
+            st.write(f"🦙LLAMA: {message.content}")
