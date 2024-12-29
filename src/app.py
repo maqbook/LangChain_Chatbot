@@ -24,3 +24,9 @@ if submit and text:
         st.session_state['chat_history'].append(("user": text, "LLAMA": response))
         st.write(response)
     response = generate_response(text)
+
+st.write("## Chat History")
+for chat in st.session_state['chat_history']:
+    st.write(f"User: {chat['user']}")
+    st.write(f"LLAMA: {chat['LLAMA']}")
+    st.write("----")
