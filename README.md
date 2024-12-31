@@ -15,4 +15,7 @@ The current LLM (Language Model) being used is **Llama 3.2 3b**. You can interac
     streamlit run app.py
     ```
 
-Enjoy your interactive chatbot experience!
+
+## User Interface
+### The initial interface of the application.
+![interface2](https://github.com/user-attachments/assets/55f3e254-2935-48d2-a42e-2a8d0f537415)
